@@ -1,0 +1,104 @@
+---
+title: "Data607 Lab2"
+output: html_document
+Author: "Biyag Dukuray"
+date: "2024-02-01"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+## DATA 607 LAB 2: SQL & R
+
+This is Lab2 of Data 607 which is the SQL and R lab. I began this lab by asking 5 friends their ratings on 6 different movies. These movies included "Remember the titans",	"Coach Carter",	"Love & Basketball"	,"Goodfellas",	"Black Panther" &	"Joker". I began by going to my workbench and creating a table, the commands are posted on the far bottom. 
+
+
+
+## Load Libararies
+
+```{Load Libraries}
+
+library("DBI")
+library("dplyr")
+library("tidyverse")
+library("RMySQL")
+```
+
+## Upload Data from MySQL to R Studio 
+
+I exported the dataset from MySQL as a CSV file to my computer and uploaded it to R Studio. This now gives us the ability to clean and transform the data if needed using R tools.
+
+*I honestly had trouble connecting to my database though I had all the proper steps in place. I tried several different things but this didn't work for me so I tried a different method which we had the option of doing. I would like some feedback on what my mistake in this part so I can connect directly in my next data importing task.
+
+This was my input among many others that I tried:
+connection <- dbConnect(RMySQL::MySQL(), 
+                                                     dbname = "DATA_607_Movie_Ratings",
+                                                     host = "127.0.0.1",
+                                                     port = 3306, 
+                                                     user = "root", 
+                                                     password = "YES"
+
+```{r pressure, echo=FALSE}
+
+file_path <- "DATA607MOVIERATINGS.csv"
+
+Movie_ratings <- read.csv(file_path)
+```
+## Transforming and exploring the data
+We'll now use some R functions to clean and explore the data. We cleaned the data and set it into a table. Upon completing the table we used the average columns function with a line that excludes the N/A. I arrived at "Goodfellas" with the highest average rating of 4.75! 
+
+```{r}
+
+str(Movie_ratings)
+
+
+Movie_ratings2 <- data.frame(
+  column1 = c("Mus", "Ab", "Husein", "Isha", "Moh"),
+  column2 = c("4", "4", "5", "NA", "4"),
+  column3 = c("5", "5", "4", "4", "5"),
+  column4 = c("4", "5", "4", "5", "5"),
+  column5 = c("5", "4", "5", "NA", "5"),
+  column6 = c("5", "4", "5", "4", "4"),
+  column7 = c("5", "5", "4", "4", "5"),
+  stringsAsFactors = FALSE
+)
+
+names(Movie_ratings2) <- c("Name", "Remember_the_titans", "Coach_Carter", "Love&Basketball", "Goodfellas", "Black_Panther", "Joker")
+
+
+print(Movie_ratings2)
+
+
+```
+
+## CORRESPONDING SQL COMMANDS 
+Create Table in SQL
+
+CREATE TABLE `Movie Ratings` (
+  `Friends Name` varchar(15) NOT NULL,
+  `Remember the titans` varchar(45) DEFAULT NULL,
+  `Coach Carter` varchar(45) NOT NULL,
+  `Love and Basketball` varchar(45) NOT NULL,
+  `Good Fellas` varchar(45) DEFAULT NULL,
+  `Black Panther` varchar(45) NOT NULL,
+  `Joker` varchar(45) NOT NULL,
+  PRIMARY KEY (`Friends Name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+## Changed table name
+
+ALTER TABLE `DATA 607 Movie Ratings`.`Movie Ratings` 
+
+# Enter Information into table 
+
+INSERT INTO `DATA 607 Movie Ratings`.`Movie Ratings` (`Friends Name`, `Remember the titans`, `Coach Carter`, `Love and Basketball`, `Good Fellas`, `Black Panther`, `Joker`) VALUES ('Mus', '4', '5', '4', '5', '5', '5');
+INSERT INTO `DATA 607 Movie Ratings`.`Movie Ratings` (`Friends Name`, `Remember the titans`, `Coach Carter`, `Love and Basketball`, `Good Fellas`, `Black Panther`, `Joker`) VALUES ('AB', '4', '5', '5', '4', '4', '5');
+INSERT INTO `DATA 607 Movie Ratings`.`Movie Ratings` (`Friends Name`, `Remember the titans`, `Coach Carter`, `Love and Basketball`, `Good Fellas`, `Black Panther`, `Joker`) VALUES ('Husein', '5', '4', '4', '5', '5', '4');
+INSERT INTO `DATA 607 Movie Ratings`.`Movie Ratings` (`Friends Name`, `Remember the titans`, `Coach Carter`, `Love and Basketball`, `Good Fellas`, `Black Panther`, `Joker`) VALUES ('Isha', '', '4', '5', 'N/A', '4', '4');
+INSERT INTO `DATA 607 Movie Ratings`.`Movie Ratings` (`Friends Name`, `Remember the titans`, `Coach Carter`, `Love and Basketball`, `Good Fellas`, `Black Panther`, `Joker`) VALUES ('Moh', '4', '5', '5', '5', '4', '5');
+
